@@ -1,3 +1,10 @@
 FactoryGirl.define do
-  # <factories for each model go here>
+
+  sequence(:title) { |n| "Idea Title #{n}" }
+  sequence(:body) { |n| "Idea Body #{n}" }
+
+  factory :idea do
+    title
+    body
+  end
 end
