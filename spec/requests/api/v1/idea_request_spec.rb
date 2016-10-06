@@ -65,4 +65,43 @@ RSpec.describe 'Ideas Endpoint', :type => :request do
 
     expect(leftover_ideas.count).to eq(1)
   end
+
+  it 'should update an idea' do
+    ideas = create_list(:idea, 2)
+    original_idea  = ideas.first
+    unedited_idea = ideas.last
+
+    expect(Idea.where(id: original_idea.id, title: original_idea.title)).to exist
+
+    idea_params = {
+      title: 'Do nothing',
+      body: 'Find a couch and sit on it.',
+      quality: 'genius'
+    }
+
+    put "/api/v1/ideas/#{original_idea.id}", params: idea_params
+
+    expect(response.status).to eq(204)
+
+    updated_idea = Idea.find(original_idea.id)
+
+    expect(updated_idea.title).to eq('Do nothing')
+    expect(updated_idea.title).to_not eq(original_idea.title)
+    expect(updated_idea.body).to eq('Find a couch and sit on it.')
+    expect(updated_idea.body).to_not eq(original_idea.body)
+    expect(updated_idea.quality).to eq('genius')
+    expect(updated_idea.quality).to_not eq(original_idea.quality)
+
+    get '/api/v1/ideas'
+
+    all_ideas = JSON.parse(response.body, symbolize_names: :true)
+
+    expect(all_ideas.count).to eq(2)
+    expect(all_ideas.first[:title]).to eq(unedited_idea[:title])
+    expect(all_ideas.first[:body]).to eq(unedited_idea[:body])
+    expect(all_ideas.first[:quality]).to eq(unedited_idea[:quality])
+    expect(all_ideas.last[:title]).to eq('Do nothing')
+    expect(all_ideas.last[:body]).to eq('Find a couch and sit on it.')
+    expect(all_ideas.last[:quality]).to eq('genius')
+  end
 end
