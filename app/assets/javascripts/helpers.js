@@ -6,7 +6,7 @@ function appendRow(idea) {
       "</td>" +
 
       "<td contenteditable='true' class='body input' id=body-" + idea.id + ">" +
-        idea.body +
+        trimBody(idea.body) +
       "</td>" +
 
       "<td id='quality-" + idea.id + "'>" +
@@ -14,36 +14,46 @@ function appendRow(idea) {
       "</td>" +
 
       "<td>" +
-        "<div data-quality='" + idea.quality + "'" + "class='btn-group-vertical'>" +
+        "<div data-quality='" + idea.quality + "'" + "class='btn-group'>" +
           "<button type='button' id='upvote-" + idea.id + "'" + "class='upvote btn btn-sm btn-primary'>" +
             "<span class='glyphicon glyphicon-thumbs-up'></span>" +
           "</button>" +
-          "<button type='button' id='downvote-" + idea.id + "'" + "class='downvote btn btn-sm btn-primary'>" +
+          "<button type='button' id='downvote-" + idea.id + "'" + "class='downvote btn btn-sm btn-warning'>" +
             "<span class='glyphicon glyphicon-thumbs-down'></span>" +
           "</button>" +
         "</div>" +
       "</td>" +
 
       "<td>" +
-        "<button type='button' id='" + idea.id + "'" + "class='delete btn btn-danger'>" +
+        "<button type='button' id='" + idea.id + "'" + "class='delete btn btn-sm btn-danger'>" +
           "<span class='glyphicon glyphicon-remove'></span>" +
         "</button>" +
       "</td>" +
     "</tr>"
   )
-};
+}
 
 function removeRow(idea_id) {
   let id = "#idea-" + idea_id
   $(id).remove()
-};
+}
 
 function mapQuality(index) {
   let qualities = ["swill", "plausible", "genius"]
   return qualities[index]
-};
+}
 
 function clearFields() {
   $("#titleField").val("")
   $("#bodyField").val("")
+}
+
+function trimBody(body) {
+  if (body.length > 100) {
+    let trimmed = body.substr(0, 100);
+    return trimmed.substr(0, Math.min(trimmed.length,
+    trimmed.lastIndexOf(" "))) + "..."
+  } else {
+    return body
+  }
 }
