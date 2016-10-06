@@ -28,12 +28,16 @@ function downvoteIdea() {
 function upvote(quality) {
   if (quality < 2) {
     return quality + 1;
+  } else {
+    return quality;
   }
 }
 
 function downvote(quality) {
   if (quality > 0) {
     return quality - 1;
+  } else {
+    return quality;
   }
 }
 
@@ -46,7 +50,7 @@ function updateAjax(target, qualityParams, ideaId) {
     data: qualityParams,
     success: function() {
       $(target).parent().attr("data-quality", newQuality);
-      $(target).parent().parent().prev().text(mapQuality(newQuality));
+      $(target).closest("td").prev().text(mapQuality(newQuality));
     },
     error: function(errorRes) {
       console.log(errorRes);
