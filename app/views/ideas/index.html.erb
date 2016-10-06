@@ -1,12 +1,30 @@
-<h1>Ideas In A Box</h1>
+<div class="container">
+  <h2>Ideas In A Box</h2>
 
-<table class="ideas_table table table-striped">
-  <thead>
-    <tr>
-      <th>Title</th>
-      <th>Body</th>
-      <th>Quality</th>
-    </tr>
-  </thead>
-  <tbody id="table-body"></tbody>
-</table>
+  <form class="form-inline" id="newIdea">
+    <div class="form-group">
+      <label for="titleField">Title</label>
+      <input class="form-control" type="text" id="titleField" name="title" placeholder="Idea Title">
+    </div>
+
+    <div class="form-group">
+      <label for="bodyField">Body</label>
+      <input class="form-control" type="text" id="bodyField" name="body" placeholder="Idea Body (description)">
+    </div>
+
+    <button type="submit" id="submitIdea" class="btn btn-primary">Create Idea</button>
+  </form>
+
+  <div class="ideas"></div>
+    <table class="ideas_table table table-striped">
+      <thead>
+        <tr>
+          <th>Title</th>
+          <th>Body</th>
+          <th>Quality</th>
+        </tr>
+      </thead>
+      <tbody id="table-body"></tbody>
+    </table>
+  </div>
+</div>
