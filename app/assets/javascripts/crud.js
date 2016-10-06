@@ -8,8 +8,14 @@ $(document).ready(() => {
     $("#table-body").append("<tr id=idea-"+ idea.id +">" +
       "<td>" + idea.title + "</td>" +
       "<td>" + idea.body + "</td>" +
-      "<td>" + idea.quality + "</td>" + "</tr>"
-    );
+      "<td>" + idea.quality + "</td>" +
+      "<td>" + "<button type='button' id='" + idea.id + "' " + "class='delete'>Delete</button>" + "</td>" + "</tr>"
+    )
+  };
+
+  function removeRow(idea_id) {
+    let id = "#idea-" + idea_id
+    $(id).remove()
   };
 
   $("#submitIdea").on('click', e => {
@@ -22,6 +28,18 @@ $(document).ready(() => {
       dataType: "JSON",
       data: newData,
       success: response => appendRow(response),
+      error: error => console.log(error)
+    })
+  });
+
+  $("#ideas_table").on('click', '.delete', e => {
+    var id = e.currentTarget.id
+
+    $.ajax({
+      url: "/api/v1/ideas/" + id,
+      type: "DELETE",
+      dataType: "JSON",
+      success: response => removeRow(id),
       error: error => console.log(error)
     })
   })

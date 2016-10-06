@@ -44,4 +44,25 @@ RSpec.describe 'Ideas Endpoint', :type => :request do
     expect(new_idea[:body]).to eq('Find radioactive material to jump into.')
     expect(new_idea[:quality]).to eq('genius')
   end
+
+  it 'should delete an idea' do
+    ideas = create_list(:idea, 2)
+    deleted_idea   = ideas.first
+    remaining_idea = ideas.last
+
+    expect(Idea.where(id: deleted_idea.id, title: deleted_idea.title)).to exist
+    expect(Idea.where(id: remaining_idea.id, title: remaining_idea.title)).to exist
+
+    delete "/api/v1/ideas/#{deleted_idea.id}"
+
+    expect(response.status).to eq(204)
+    expect(Idea.where(id: deleted_idea.id, title: deleted_idea.title)).to_not exist
+    expect(Idea.where(id: remaining_idea.id, title: remaining_idea.title)).to exist
+
+    get '/api/v1/ideas'
+
+    leftover_ideas = JSON.parse(response.body)
+
+    expect(leftover_ideas.count).to eq(1)
+  end
 end
