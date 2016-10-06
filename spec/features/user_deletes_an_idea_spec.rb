@@ -11,7 +11,7 @@ RSpec.describe "user deletes an idea", :type => :feature, :js => true do
     visit "/"
 
     within("#idea-1") do
-      click_on "Delete"
+      find(".delete").click
     end
 
     expect(current_path).to eq(root_path)
@@ -19,7 +19,7 @@ RSpec.describe "user deletes an idea", :type => :feature, :js => true do
     expect(page).to have_content(idea2.title)
     expect(page).to have_content(idea2.body)
     expect(page).to have_css(idea2_css_id)
-    
+
     expect(page).to_not have_content(idea1.title)
     expect(page).to_not have_content(idea1.body)
     expect(page).to_not have_css(idea1_css_id)

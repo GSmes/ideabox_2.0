@@ -8,7 +8,10 @@ $(document).ready(() => {
       type: "POST",
       dataType: "JSON",
       data: newData,
-      success: response => appendRow(response),
+      success: response => {
+        appendRow(response)
+        clearFields()
+      },
       error: error => console.log(error)
     })
   })
