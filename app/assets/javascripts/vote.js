@@ -1,58 +1,55 @@
-$(document).ready(() => {
-  (function listenForVotes() {
-    upvoteIdea()
-    downvoteIdea()
-  }())
-})
+$(document).ready(function() {
+  upvoteIdea();
+  downvoteIdea();
+});
 
 function upvoteIdea() {
-  $("#ideas_table").on('click', '.upvote', e => {
+  $("#ideas_table").on('click', '.upvote', function(e) {
+    var target = e.currentTarget;
+    var ideaId = target.id.replace(/^\D+/g, "");
+    var currentQuality = parseInt($(target).parent().attr('data-quality'), 10);
+    var qualityParams = { quality: upvote(currentQuality) };
 
-    let target = e.currentTarget
-    let num = target.id.replace(/^\D+/g, "")
-    let quality_num = parseInt($(target).parent().attr('data-quality'))
-    let edit_data = { quality: upvote(quality_num) }
-    updateAjax(target, edit_data, num)
-  })
+    updateAjax(target, qualityParams, ideaId);
+  });
 }
 
 function downvoteIdea() {
-  $("#ideas_table").on('click', '.downvote', e => {
-    let target = e.currentTarget
-    let num = target.id.replace(/^\D+/g, "")
-    let quality_num = $(target).parent().attr('data-quality')
-    let edit_data = { quality: downvote(quality_num) }
-    updateAjax(target, edit_data, num)
-  })
+  $("#ideas_table").on('click', '.downvote', function(e) {
+    var target = e.currentTarget;
+    var ideaId = target.id.replace(/^\D+/g, "");
+    var currentQuality = parseInt($(target).parent().attr('data-quality'), 10);
+    var qualityParams = { quality: downvote(currentQuality) };
+
+    updateAjax(target, qualityParams, ideaId);
+  });
 }
 
 function upvote(quality) {
   if (quality < 2) {
-    return quality + 1
+    return quality + 1;
   }
 }
 
 function downvote(quality) {
   if (quality > 0) {
-    return quality - 1
+    return quality - 1;
   }
 }
 
-function updateAjax(target, edit_data, num) {
+function updateAjax(target, qualityParams, ideaId) {
+  var newQuality = parseInt(qualityParams.quality, 10);
 
   $.ajax({
-    url: "/api/v1/ideas/" + num,
+    url: "/api/v1/ideas/" + ideaId,
     type: "PATCH",
-    dataType: "JSON",
-    data: edit_data,
-    success: response => {
-      $(target).parent().attr("data-quality", response.quality)
-      $(target).parent()
-        .parent().prev()
-        .text(mapQuality(response.quality))
+    data: qualityParams,
+    success: function() {
+      $(target).parent().attr("data-quality", newQuality);
+      $(target).parent().parent().prev().text(mapQuality(newQuality));
     },
-    error: errorRes => {
-      console.log(errorRes)
+    error: function(errorRes) {
+      console.log(errorRes);
     }
-  })
+  });
 }

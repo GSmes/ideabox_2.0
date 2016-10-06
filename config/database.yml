@@ -81,5 +81,3 @@ test:
 production:
   <<: *default
   database: ideabox_2_0_production
-  username: ideabox_2_0
-  password: <%= ENV['IDEABOX_2_0_DATABASE_PASSWORD'] %>
