@@ -25,4 +25,23 @@ RSpec.describe 'Ideas Endpoint', :type => :request do
     expect(third_idea['body']).to eq(expected_idea_3.body)
     expect(third_idea['quality']).to eq(expected_idea_3.quality)
   end
+
+  it 'should create an idea' do
+    idea_params = {
+      title: 'Become a superhero',
+      body: 'Find radioactive material to jump into.',
+      quality: 'genius'
+    }
+
+    post "/api/v1/ideas", params: idea_params
+
+    expect(response.status).to eq(201)
+
+    new_idea = JSON.parse(response.body, symbolize_names: :true)
+
+    expect(new_idea[:id]).to eq(4)
+    expect(new_idea[:title]).to eq('Become a superhero')
+    expect(new_idea[:body]).to eq('Find radioactive material to jump into.')
+    expect(new_idea[:quality]).to eq('genius')
+  end
 end
