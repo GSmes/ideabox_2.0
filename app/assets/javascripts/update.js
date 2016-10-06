@@ -35,7 +35,7 @@ $(document).ready(() => {
   $("#ideas_table").on('click', '.downvote', e => {
     let target = e.currentTarget
     let num = target.id.replace(/^\D+/g, "")
-    let quality_num = $(target).parent().attr('data-quality'))
+    let quality_num = $(target).parent().attr('data-quality')
     let edit_data = {
       quality: downvote(quality_num)
     }
